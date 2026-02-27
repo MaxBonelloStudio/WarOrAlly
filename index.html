@@ -39,7 +39,7 @@
     header.scrolled { background:rgba(15,15,26,0.92); box-shadow:0 8px 40px rgba(0,0,0,0.35); }
     nav { display:flex; justify-content:space-between; align-items:center; }
     .logo {
-      font-family:'Orbitron',monospace; font-size:2.2rem; font-weight:700;
+      font-family:'Orbitron',monospace; font-size:2.4rem; font-weight:700;
       background:linear-gradient(90deg, var(--accent), #a78bfa); -webkit-background-clip:text;
       background-clip:text; color:transparent; letter-spacing:1px;
     }
@@ -51,7 +51,7 @@
     .hero { height:100vh; min-height:820px; display:flex; align-items:center; }
     .hero-content { max-width:900px; animation:fadeInUp 1.6s ease-out; }
     h1 {
-      font-family:'Orbitron',monospace; font-size:clamp(4rem,9vw,8rem); line-height:0.9;
+      font-family:'Orbitron',monospace; font-size:clamp(4.5rem,10vw,9rem); line-height:0.95;
       margin-bottom:1.5rem;
       background:linear-gradient(90deg,#fff,var(--accent),#c792ff);
       -webkit-background-clip:text; background-clip:text; color:transparent;
@@ -65,10 +65,11 @@
       transition: all 0.4s ease;
     }
     .ip-box:hover { transform:translateY(-6px); box-shadow:0 20px 70px rgba(0,212,255,0.25); }
-    .ip { font-weight:700; color:var(--accent); }
+    .ip { font-weight:700; color:var(--accent); flex:1; word-break:break-all; }
     .copy-btn {
       background:var(--accent); color:#000; border:none; padding:14px 28px;
       border-radius:12px; font-weight:700; cursor:pointer; transition:all 0.35s ease;
+      white-space:nowrap;
     }
     .copy-btn:hover { background:#fff; transform:scale(1.08); }
     .btn {
@@ -109,7 +110,6 @@
     footer { text-align:center; padding:100px 0 50px; color:var(--text-muted); border-top:1px solid rgba(255,255,255,0.08); }
     @keyframes fadeInUp { from {opacity:0; transform:translateY(70px);} to {opacity:1; transform:translateY(0);} }
     @media (max-width:768px) {
-      h1 { font-size:5rem; }
       .hero { padding-top:140px; text-align:center; }
       .ip-box { flex-direction:column; text-align:center; gap:16px; }
       nav { flex-direction:column; gap:16px; }
@@ -136,12 +136,12 @@
   <section class="hero" id="home">
     <div class="container">
       <div class="hero-content">
-        <h1>War<br>Or<br>Ally</h1>
+        <h1>WarOrAlly</h1>
         <p class="subtitle">Java Minecraft server. No pay-to-win. Griefing and wars allowed. Lifesteal. Form alliances and betray them freely. Custom content. Chat with us on Discord (top menu)</p>
         
         <div class="ip-box">
-          <span class="ip">YOUR.PLAYIT.ADDRESS</span>
-          <button class="copy-btn" data-clipboard="YOUR.PLAYIT.ADDRESS">Copy IP</button>
+          <span class="ip">warorally.playit.plus</span>
+          <button class="copy-btn" data-clipboard="warorally.playit.plus">Copy IP</button>
         </div>
 
         <div class="note-box">
@@ -214,7 +214,7 @@
 
       <div class="ip-box" style="margin:0 auto 3rem; max-width:700px;">
         <span class="ip">warorally.playit.plus</span>
-        <button class="copy-btn" data-clipboard="YOUR.PLAYIT.ADDRESS">Copy IP</button>
+        <button class="copy-btn" data-clipboard="warorally.playit.plus">Copy IP</button>
       </div>
 
       <div class="note-box" style="max-width:800px; margin:0 auto 3rem;">
@@ -232,8 +232,12 @@
 
       <div style="background:rgba(255,100,100,0.12); border:1px solid rgba(255,100,100,0.25); padding:20px; margin:2rem auto; max-width:700px; border-radius:var(--radius); font-size:1.1rem;">
         <strong>Server Rules Reminder:</strong><br>
-        While griefing and wars are allowed, crashing the server, mass griefing (large-scale destruction with no purpose or using exploits), and cheating/hacking are strictly against the rules.<br>
-        If you mass grief or crash the server, you will get banned.
+        Even though this is an anarchy-style server, the following rules are still enforced:<br>
+        - No crashing the server<br>
+        - No mass griefing (large-scale destruction with no purpose or using exploits)<br>
+        - No cheating / hacking<br>
+        - No inappropriate builds<br>
+        If you break these rules, you will get banned.
       </div>
 
       <h3 style="margin:4rem 0 1.5rem; font-size:2.2rem; color:var(--accent);">How to Join (Java Edition)</h3>
@@ -264,13 +268,17 @@
     window.addEventListener('scroll', () => {
       document.getElementById('header').classList.toggle('scrolled', window.scrollY > 50);
     });
-    document.querySelectorAll('[data-clipboard]').forEach(btn => {
-      btn.addEventListener('click', () => {
-        navigator.clipboard.writeText(btn.dataset.clipboard).then(() => {
-          const orig = btn.textContent;
+    document.querySelectorAll('.copy-btn').forEach(btn => {
+      btn.addEventListener('click', async () => {
+        const text = btn.getAttribute('data-clipboard');
+        try {
+          await navigator.clipboard.writeText(text);
+          const original = btn.textContent;
           btn.textContent = 'Copied!';
-          setTimeout(() => btn.textContent = orig, 2000);
-        });
+          setTimeout(() => btn.textContent = original, 2000);
+        } catch (err) {
+          alert('Failed to copy. Please copy manually: ' + text);
+        }
       });
     });
     const observer = new IntersectionObserver(entries => {
