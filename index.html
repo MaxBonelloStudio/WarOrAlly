@@ -23,6 +23,7 @@
       --glow-pink: 0 0 30px rgba(255, 128, 171, 0.4);
       --glow-red: 0 0 30px rgba(255, 80, 80, 0.5);
       --glow-gold: 0 0 40px rgba(255, 215, 0, 0.6);
+      --glow-green: 0 0 30px rgba(0, 255, 150, 0.5);
     }
     * { margin:0; padding:0; box-sizing:border-box; }
     body {
@@ -86,10 +87,10 @@
     }
     .hero::before {
       content:''; position:absolute; inset:0;
-      background: 
+      background:
         radial-gradient(circle at 30% 40%, rgba(0,224,255,0.15) 0%, transparent 70%),
         radial-gradient(circle at 70% 80%, rgba(159,125,245,0.12) 0%, transparent 60%);
-      opacity:0.6; pointer-events:none; 
+      opacity:0.6; pointer-events:none;
       animation: pulseBg 12s ease-in-out infinite;
     }
     @keyframes pulseBg {
@@ -162,14 +163,14 @@
       animation: gradientFlow 12s ease-in-out infinite;
       text-shadow:0 0 30px rgba(0,224,255,0.5);
     }
-    .features { 
-      display:grid; 
-      grid-template-columns:repeat(auto-fit,minmax(400px,1fr)); 
-      gap:60px; 
+    .features {
+      display:grid;
+      grid-template-columns:repeat(auto-fit,minmax(400px,1fr));
+      gap:60px;
     }
     .card {
       background:var(--card); backdrop-filter: blur(20px);
-      border:1px solid rgba(0,224,255,0.22); border-radius:var(--radius); 
+      border:1px solid rgba(0,224,255,0.22); border-radius:var(--radius);
       padding:52px 40px;
       transition: all 0.8s cubic-bezier(0.34, 1.56, 0.64, 1);
       opacity:0; transform:translateY(80px) scale(0.95) rotate(-2deg);
@@ -186,9 +187,9 @@
       background:linear-gradient(135deg, transparent 40%, rgba(0,224,255,0.08) 60%, transparent 80%);
       opacity:0; transition:opacity 0.7s ease;
     }
-    .card.visible { 
-      opacity:1; 
-      transform:translateY(0) scale(1) rotate(0deg); 
+    .card.visible {
+      opacity:1;
+      transform:translateY(0) scale(1) rotate(0deg);
     }
     .card.visible::before { left:100%; }
     .card:hover {
@@ -196,10 +197,23 @@
       box-shadow:0 40px 100px rgba(0,224,255,0.5);
     }
     .card:hover::after { opacity:1; }
-    .card h3 { 
-      font-size:2.3rem; margin-bottom:1.6rem; 
+    .card h3 {
+      font-size:2.3rem; margin-bottom:1.6rem;
       background:linear-gradient(45deg, var(--accent), var(--accent2));
       -webkit-background-clip:text; background-clip:text; color:transparent;
+    }
+    .card.updates-card {
+      border:2px solid #00ff96;
+      background: rgba(0, 255, 150, 0.08);
+      box-shadow: 0 0 40px rgba(0, 255, 150, 0.4);
+    }
+    .card.updates-card h3 {
+      background:linear-gradient(45deg, #00ff96, #00ffaa, #00ff96);
+      -webkit-background-clip:text; background-clip:text; color:transparent;
+      text-shadow: 0 0 20px rgba(0, 255, 150, 0.7);
+    }
+    .card.updates-card p::before {
+      content:"🔥 UPDATED "; color:#00ff96; font-weight:700; font-size:1.1em;
     }
     .card.armor-trims {
       border:2px solid #ffd700;
@@ -273,12 +287,12 @@
       <div class="hero-content">
         <h1>WarOrAlly</h1>
         <p class="subtitle">Java Minecraft server. No pay-to-win. Griefing and wars allowed. Lifesteal. Form alliances and betray them freely. Custom content. Chat with us on Discord (top menu)</p>
-      
+     
         <div class="ip-box">
           <span class="ip">warorally.playit.plus</span>
           <button class="copy-btn" data-clipboard="warorally.playit.plus">Copy IP</button>
         </div>
-      
+     
         <div class="note-box">
           <strong>Note on playit.gg tunneling:</strong><br>
           We use playit.gg (free tunneling service) to host the server. Sometimes your router or ISP may completely block the connection. This is because some other playit.gg users have hosted malware in the past, causing certain IPs to get flagged or blacklisted. Our server is completely safe and has no malware.<br><br>
@@ -301,6 +315,7 @@
         <div class="card"><h3>Reworked Bosses</h3><p>Wither and Ender Dragon have updated attacks and improved loot tables.</p></div>
         <div class="card"><h3>Custom Structures & Biomes</h3><p>Hand-crafted structures and modified biomes for better exploration.</p></div>
         <div class="card"><h3>Head Drops</h3><p>Players drop their heads on death. Collect them as trophies.</p></div>
+        <div class="card updates-card"><h3>Lifesteal Update</h3><p><strong>Lifesteal no longer bans the lowest hearts you can have is 2</strong><br>During PvP: If you get slain to death by a player, your inventory will drop.<br>If killed by mobs/environment: You will keep your inventory (all worlds).<br><strong>Ban Appeals:</strong> If you got banned for anything else, you can appeal at the Discord server for ALL bans.</p></div>
         <div class="card"><h3>Griefing & Wars Allowed</h3><p>No land claims or protection. Build, break, and fight freely.</p></div>
         <div class="card"><h3>Alliances & Betrayals</h3><p>Form alliances with other players or groups. Team up, share resources, coordinate attacks. Betrayals are fully allowed. Trust is earned, not enforced.</p></div>
         <div class="card"><h3>Java & Cracked</h3><p>Offline-mode login supported. Java Edition only (no Bedrock).</p></div>
@@ -310,7 +325,7 @@
   <section id="join" style="text-align:center; padding:200px 0 180px;">
     <div class="container">
       <h2>Join WarOrAlly</h2>
-    
+   
       <div class="vanilla-note" style="margin:0 auto 5rem;">
         <strong>Important - Vanilla Friendly:</strong><br>
         All features work without any mods. You can join and play on completely vanilla Minecraft. Everything is handled server-side with plugins only.<br><br>
@@ -322,7 +337,7 @@
         How: Multiplayer → Direct Connect → paste <code>warorally.playit.plus</code> → Join Server.<br><br>
         It's possible to add the server normally and join from the list, but if you get connection timeouts, "can't connect to server", or it fails after several tries (common with playit.gg tunnels), <strong>switch to Direct Connect</strong> — it often bypasses the issue and connects more reliably.
       </div>
-    
+   
       <div class="rules-reminder">
         <strong>Server Rules Reminder:</strong><br>
         Even though this is an anarchy-style server, the following rules are still enforced:<br>
@@ -333,15 +348,15 @@
         If you break these rules, <strong>please report it immediately on our Discord server</strong> (link in top menu).<br>
         Violators will be banned to keep the community fair and fun.
       </div>
-    
-      <h3 style="margin:6rem 0 2.5rem; font-size:2.8rem; color:our(--accent);">How to Join (Java Edition)</h3>
-      <p style="font-size:1.4rem; color:our(--text-muted); max-width:680px; margin:0 auto 4rem; line-height:1.9;">
+   
+      <h3 style="margin:6rem 0 2.5rem; font-size:2.8rem; color:var(--accent);">How to Join (Java Edition)</h3>
+      <p style="font-size:1.4rem; color:var(--text-muted); max-width:680px; margin:0 auto 4rem; line-height:1.9;">
         1. Open your Minecraft Launcher<br>
         2. Go to Multiplayer then Add Server<br>
         3. Paste the server IP from above<br>
         4. Click Done then Join Server
       </p>
-      <p style="color:our(--text-muted); font-size:1.24rem;">Latest version recommended. Cracked accounts supported</p>
+      <p style="color:var(--text-muted); font-size:1.24rem;">Latest version recommended. Cracked accounts supported</p>
     </div>
   </section>
   <footer>
