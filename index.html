@@ -3,76 +3,109 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>WarOrAlly Minecraft Server</title>
+  <title>WarOrAlly</title>
   <meta name="description" content="Java Minecraft server. No pay-to-win. Griefing and wars allowed. Lifesteal. Alliances and betrayals. Custom content. 1.21. Vanilla compatible"/>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Orbitron:wght@500;700&display=swap" rel="stylesheet">
   <style>
     :root {
-      --bg: #0b1120;
+      --bg: #0a0f1d;
       --accent: #00e0ff;
       --accent2: #9f7df5;
       --accent3: #ff80ab;
-      --card: rgba(20, 28, 50, 0.72);
+      --card: rgba(20, 28, 50, 0.32);
+      --glass-blur: blur(16px);
       --text: #f0f8ff;
       --text-muted: #b3d9ff;
       --radius: 26px;
-      --glow-teal: 0 0 30px rgba(0, 224, 255, 0.4);
-      --glow-purple: 0 0 30px rgba(159, 125, 245, 0.4);
-      --glow-pink: 0 0 30px rgba(255, 128, 171, 0.4);
-      --glow-red: 0 0 30px rgba(255, 80, 80, 0.5);
-      --glow-gold: 0 0 40px rgba(255, 215, 0, 0.6);
-      --glow-green: 0 0 30px rgba(0, 255, 150, 0.5);
+      --glow-teal: 0 0 30px rgba(0, 224, 255, 0.5);
+      --glow-purple: 0 0 30px rgba(159, 125, 245, 0.7);
+      --glow-pink: 0 0 30px rgba(255, 128, 171, 0.5);
     }
     * { margin:0; padding:0; box-sizing:border-box; }
     body {
       font-family: 'Inter', system-ui, sans-serif;
-      background: var(--bg);
+      background: #0a0f1d;
       color: var(--text);
       min-height:100vh;
       overflow-x:hidden;
-      background-image:
-        radial-gradient(circle at 15% 15%, rgba(0,224,255,0.12) 0%, transparent 65%),
-        radial-gradient(circle at 85% 85%, rgba(159,125,245,0.09) 0%, transparent 75%),
-        radial-gradient(circle at 50% 50%, rgba(255,128,171,0.06) 0%, transparent 80%);
-      background-attachment: fixed;
-      scroll-behavior: smooth;
+      position: relative;
     }
-
-    /* ── NEW: Floating particles in hero ── */
-    .particles {
-      position: absolute;
+    .liquid-glass {
+      position: fixed;
       inset: 0;
       pointer-events: none;
+      z-index: -3;
+      background: linear-gradient(135deg, #0a0f1d 0%, #0d1428 50%, #0a0f1d 100%);
       overflow: hidden;
-      z-index: 1;
     }
-    .particle {
+    .liquid-glass::before,
+    .liquid-glass::after {
+      content: '';
       position: absolute;
-      background: var(--accent);
-      border-radius: 50%;
-      box-shadow: 0 0 12px var(--accent), 0 0 24px var(--accent2);
-      opacity: 0.35;
+      width: 160%;
+      height: 160%;
+      top: -30%;
+      left: -30%;
+      background: radial-gradient(circle at 30% 40%, rgba(0, 255, 255, 0.24) 0%, transparent 40%),
+                  radial-gradient(circle at 70% 60%, rgba(160, 110, 255, 0.22) 0%, transparent 45%),
+                  radial-gradient(circle at 45% 75%, rgba(255, 140, 210, 0.20) 0%, transparent 50%);
+      animation: liquid-flow 65s ease-in-out infinite;
+      opacity: 0.92;
+      filter: blur(80px);
+      mix-blend-mode: screen;
+    }
+    .liquid-glass::after {
+      animation: liquid-flow 88s ease-in-out infinite reverse;
+      opacity: 0.78;
+      background: radial-gradient(circle at 20% 70%, rgba(0, 255, 220, 0.18) 0%, transparent 40%),
+                  radial-gradient(circle at 80% 30%, rgba(255, 230, 140, 0.16) 0%, transparent 45%);
+    }
+    @keyframes liquid-flow {
+      0%   { transform: translate(0%, 0%) scale(1.05) rotate(0deg); }
+      25%  { transform: translate(15%, 10%) scale(1.15) rotate(5deg); }
+      50%  { transform: translate(-12%, -15%) scale(1.22) rotate(-4deg); }
+      75%  { transform: translate(10%, -8%) scale(1.12) rotate(6deg); }
+      100% { transform: translate(0%, 0%) scale(1.05) rotate(0deg); }
+    }
+    .tiny-stars {
+      position: fixed;
+      inset: 0;
       pointer-events: none;
-      animation: float linear infinite;
+      z-index: -1;
+      overflow: hidden;
     }
-    @keyframes float {
-      0%   { transform: translateY(100vh) scale(0.4); opacity: 0; }
-      10%  { opacity: 0.7; }
-      90%  { opacity: 0.7; }
-      100% { transform: translateY(-30vh) translateX(var(--drift)) scale(0.6); opacity: 0; }
+    .star {
+      position: absolute;
+      background: linear-gradient(90deg, transparent, #ffffffbb, transparent);
+      border-radius: 50%;
+      box-shadow: 0 0 6px currentColor, 0 0 12px currentColor;
+      opacity: 0;
+      pointer-events: none;
+      transform: translateX(-50%) translateY(-50%);
+      will-change: transform, opacity;
     }
-
+    @keyframes fallStar {
+      0%   { transform: translateY(-30vh) translateX(var(--drift)) scale(0.5); opacity: 0; }
+      8%   { opacity: 0.95; }
+      92%  { opacity: 0.95; }
+      100% { transform: translateY(130vh) translateX(calc(var(--drift) * 1.4)) scale(0.7); opacity: 0; }
+    }
     .container { max-width:1340px; margin:0 auto; padding:0 26px; }
     header {
       position:fixed; inset:0 0 auto 0; z-index:1000; padding:22px 0;
-      backdrop-filter: blur(20px);
-      transition: all 0.8s cubic-bezier(0.22, 1, 0.36, 1);
+      backdrop-filter: var(--glass-blur);
+      -webkit-backdrop-filter: var(--glass-blur);
+      background: rgba(11,17,32,0.42);
+      border-bottom: 1px solid rgba(0,224,255,0.12);
+      transition: all 0.6s ease;
     }
     header.scrolled {
-      background:rgba(11,17,32,0.92);
-      box-shadow:0 14px 50px rgba(0,0,0,0.5);
+      background: rgba(11,17,32,0.68);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      box-shadow:0 14px 50px rgba(0,0,0,0.55);
       padding:16px 0;
     }
     nav { display:flex; justify-content:space-between; align-items:center; }
@@ -83,19 +116,12 @@
       -webkit-background-clip:text; background-clip:text; color:transparent;
       letter-spacing:2px;
       animation: gradientFlow 8s ease-in-out infinite;
-      transition: transform 0.4s ease;
+      transition: all 0.4s ease;
     }
     .logo:hover {
-      transform: scale(1.08) rotate(3deg);
-      animation: glitch 0.6s linear infinite;
-      text-shadow: 2px 2px 0 #ff80ab, -2px -2px 0 #00e0ff;
-    }
-    @keyframes glitch {
-      0%,100% { transform: translate(0); }
-      20% { transform: translate(-3px, 3px); }
-      40% { transform: translate(3px, -3px); }
-      60% { transform: translate(-2px, 2px); }
-      80% { transform: translate(2px, -2px); }
+      transform: scale(1.06);
+      filter: brightness(1.15) drop-shadow(0 0 12px rgba(0,224,255,0.6));
+      animation-duration: 3s;
     }
     @keyframes gradientFlow {
       0%, 100% { background-position: 0% 50%; }
@@ -119,23 +145,19 @@
       text-shadow:0 0 16px var(--accent);
     }
     .nav-links a:hover::after { width:100%; }
-
     .hero {
-      min-height:100vh; display:flex; align-items:center; padding:140px 0 100px;
+      min-height:100vh; display:flex; align-items:center; padding:140px 0 40px;
       position:relative; overflow:hidden;
     }
     .hero::before {
       content:''; position:absolute; inset:0; z-index:0;
-      background:
-        radial-gradient(circle at 30% 40%, rgba(0,224,255,0.15) 0%, transparent 70%),
-        radial-gradient(circle at 70% 80%, rgba(159,125,245,0.12) 0%, transparent 60%);
-      opacity:0.6; pointer-events:none;
-      animation: pulseBg 12s ease-in-out infinite;
+      background: radial-gradient(circle at 50% 50%, rgba(0,220,255,0.11) 0%, transparent 70%);
+      opacity:0.65; pointer-events:none;
+      animation: pulseSoft 16s ease-in-out infinite;
     }
-    @keyframes pulseBg {
-      0%,100% { opacity:0.5; transform:scale(1) rotate(0deg); }
-      33% { opacity:0.8; transform:scale(1.08) rotate(1deg); }
-      66% { opacity:0.6; transform:scale(1.12) rotate(-1deg); }
+    @keyframes pulseSoft {
+      0%,100% { opacity:0.55; transform:scale(1); }
+      50%     { opacity:0.85; transform:scale(1.07); }
     }
     .hero-content { max-width:1040px; position:relative; z-index:2; }
     h1 {
@@ -145,7 +167,7 @@
       background-size:400% 400%;
       -webkit-background-clip:text; background-clip:text; color:transparent;
       animation: titleFlow 10s ease-in-out infinite;
-      text-shadow:0 0 40px rgba(0,224,255,0.4);
+      text-shadow:0 0 50px rgba(0,224,255,0.5), 0 0 90px rgba(159,125,245,0.4);
     }
     @keyframes titleFlow {
       0% { background-position:0% 50%; }
@@ -155,63 +177,47 @@
       100% { background-position:0% 50%; }
     }
     .subtitle {
-      font-size:1.8rem; max-width:760px; margin-bottom:3.5rem; color:var(--text-muted); line-height:1.7; opacity:0.92;
-      overflow: hidden; white-space: nowrap; border-right: 3px solid var(--accent);
-      animation: typing 4.5s steps(60, end) forwards, blink 0.8s step-end infinite;
+      font-size:1.8rem; max-width:760px; margin-bottom:3.5rem; color:var(--text-muted); line-height:1.7;
+      word-wrap: break-word; hyphens: auto;
     }
-    @keyframes typing {
-      from { width: 0; }
-      to   { width: 100%; }
-    }
-    @keyframes blink {
-      from, to { border-color: transparent; }
-      50%      { border-color: var(--accent); }
-    }
-
-    /* ── Enhanced IP box ── */
     .ip-box {
-      background:var(--card); backdrop-filter: blur(24px);
-      border:1px solid rgba(0,224,255,0.28); border-radius:var(--radius); padding:36px;
+      background:var(--card); backdrop-filter: var(--glass-blur);
+      -webkit-backdrop-filter: var(--glass-blur);
+      border:1px solid rgba(0,224,255,0.28);
+      border-radius:var(--radius); padding:36px;
       display:flex; align-items:center; gap:32px; font-size:1.8rem;
       font-family:monospace; margin:3rem 0; box-shadow:0 16px 50px rgba(0,0,0,0.45);
-      transition: all 0.6s cubic-bezier(0.34, 1.56, 0.64, 1);
+      transition: all 0.5s ease;
       position:relative; overflow:hidden;
-      transform-style: preserve-3d;
     }
     .ip-box:hover {
-      transform: translateY(-12px) scale(1.03) rotateX(8deg) rotateY(6deg);
-      box-shadow: 0 30px 80px rgba(0,224,255,0.55), 0 0 60px rgba(159,125,245,0.4);
+      transform: translateY(-8px);
+      box-shadow: 0 24px 60px rgba(0,224,255,0.5), 0 0 50px rgba(159,125,245,0.4);
     }
-    .ip-box::before {
-      content:''; position:absolute; inset:-2px; border-radius:var(--radius);
-      background:linear-gradient(45deg, transparent, var(--accent), var(--accent2), var(--accent3), transparent);
-      opacity:0; transition:opacity 0.6s ease;
-      animation: borderFlow 4s linear infinite;
+    .ip {
+      font-weight:700; color:var(--accent); flex:1; word-break:break-all;
+      transition: all 0.3s ease;
     }
-    @keyframes borderFlow {
-      0% { transform:translateX(-100%) rotate(0deg); }
-      50% { transform:translateX(0%) rotate(180deg); }
-      100% { transform:translateX(100%) rotate(360deg); }
+    .ip:hover {
+      color: #ffffff;
+      text-shadow: 0 0 12px var(--accent);
     }
-    .ip-box:hover::before { opacity:0.6; }
-    .ip { font-weight:700; color:var(--accent); flex:1; word-break:break-all; }
     .copy-btn {
       background:linear-gradient(45deg, var(--accent), var(--accent2));
       color:#000; border:none; padding:18px 42px;
       border-radius:18px; font-weight:700; cursor:pointer;
-      transition: all 0.6s cubic-bezier(0.34, 1.56, 0.64, 1);
+      transition: all 0.5s ease;
       box-shadow:0 8px 30px rgba(0,224,255,0.5);
     }
     .copy-btn:hover {
-      background:linear-gradient(45deg, #fff, var(--accent));
-      transform:scale(1.15) translateY(-6px) rotate(4deg);
-      box-shadow:0 20px 50px rgba(255,255,255,0.7), 0 0 40px var(--accent);
+      background:linear-gradient(45deg, #ffffff, var(--accent));
+      transform:scale(1.08) translateY(-4px);
+      box-shadow:0 16px 40px rgba(255,255,255,0.5), 0 0 40px var(--accent);
     }
-
-    section { padding:200px 0 160px; }
+    section { padding:60px 0 100px; background: transparent; }
     h2 {
       font-family:'Orbitron',monospace; font-size:4.5rem; text-align:center;
-      margin-bottom:6rem;
+      margin-bottom:3.5rem;
       background:linear-gradient(90deg,var(--accent),#fff,var(--accent2),var(--accent3),var(--accent));
       background-size:400% 400%;
       -webkit-background-clip:text; background-clip:text; color:transparent;
@@ -221,93 +227,52 @@
     .features {
       display:grid;
       grid-template-columns:repeat(auto-fit,minmax(400px,1fr));
-      gap:60px;
+      gap:40px;
     }
-    .card {
-      background:var(--card); backdrop-filter: blur(20px);
-      border:1px solid rgba(0,224,255,0.22); border-radius:var(--radius);
-      padding:52px 40px;
-      transition: all 0.8s cubic-bezier(0.34, 1.56, 0.64, 1);
-      opacity:0; transform:translateY(80px) scale(0.95) rotate(-2deg);
-      box-shadow:0 12px 40px rgba(0,0,0,0.4);
+    .card, .note-box, .rules-reminder {
+      background:var(--card);
+      backdrop-filter: var(--glass-blur);
+      -webkit-backdrop-filter: var(--glass-blur);
+      border:1px solid rgba(0,224,255,0.24);
+      border-radius:var(--radius);
+      padding:44px 36px;
+      transition: all 0.5s ease;
+      opacity:0; transform:translateY(60px);
       position:relative; overflow:hidden;
+      box-shadow:0 12px 40px rgba(0,0,0,0.35);
     }
-    .card::before {
-      content:''; position:absolute; top:0; left:-100%; width:100%; height:100%;
-      background:linear-gradient(90deg, transparent, rgba(0,224,255,0.18), transparent);
-      transition: left 0.8s cubic-bezier(0.34, 1.56, 0.64, 1);
-    }
-    .card::after {
-      content:''; position:absolute; inset:0; pointer-events:none;
-      box-shadow: inset 0 0 40px rgba(0,224,255,0.1);
-      opacity:0; transition: opacity 0.6s ease, box-shadow 0.6s ease;
-    }
-    .card.visible {
+    .card.visible, .note-box.visible, .rules-reminder.visible {
       opacity:1;
-      transform:translateY(0) scale(1) rotate(0deg);
+      transform:translateY(0);
       transition: all 1.1s cubic-bezier(0.23,1,0.32,1);
     }
-    .card.visible::before { left:100%; }
-    .card:hover {
-      transform:translateY(-20px) scale(1.06) rotate(2deg);
-      box-shadow:0 50px 120px rgba(0,224,255,0.6), 0 0 80px rgba(159,125,245,0.4);
-    }
-    .card:hover::after {
-      opacity:1;
-      box-shadow: inset 0 0 60px rgba(0,224,255,0.25), 0 0 70px var(--glow-teal);
-      animation: pulse-glow 2.5s infinite ease-in-out;
-    }
-    @keyframes pulse-glow {
-      0%,100% { box-shadow: inset 0 0 60px rgba(0,224,255,0.25), 0 0 70px rgba(0,224,255,0.5); }
-      50%     { box-shadow: inset 0 0 90px rgba(0,224,255,0.4), 0 0 110px rgba(0,224,255,0.8); }
+    .card:hover, .note-box:hover, .rules-reminder:hover {
+      transform:translateY(-12px);
+      box-shadow:0 30px 80px rgba(0,224,255,0.45), 0 0 60px var(--glow-purple);
+      background: rgba(20, 28, 50, 0.45);
     }
     .card h3 {
       font-size:2.3rem; margin-bottom:1.6rem;
       background:linear-gradient(45deg, var(--accent), var(--accent2));
       -webkit-background-clip:text; background-clip:text; color:transparent;
     }
-
-    .card.updates-card, .card.armor-trims { position: relative; z-index: 2; }
-
-    .note-box, .vanilla-note, .rules-reminder, .direct-connect-note {
-      backdrop-filter: blur(18px);
-      border-radius:var(--radius); padding:32px;
-      margin:4rem auto; font-size:1.22rem; line-height:1.8;
-      text-align:center; color:var(--text-muted);
-      transition: all 0.8s cubic-bezier(0.34, 1.56, 0.64, 1);
-      opacity:0; transform:translateY(80px) scale(0.96) rotateX(10deg);
-      position:relative; overflow:hidden;
-      animation: subtle-float 7s ease-in-out infinite;
-    }
-    @keyframes subtle-float {
-      0%,100% { transform: translateY(0) rotateX(0deg); }
-      50%     { transform: translateY(-12px) rotateX(4deg); }
-    }
-    .note-box.visible, .vanilla-note.visible, .rules-reminder.visible, .direct-connect-note.visible {
-      opacity:1; transform:translateY(0) scale(1) rotateX(0deg);
-    }
-    .note-box:hover, .vanilla-note:hover, .direct-connect-note:hover {
-      transform:scale(1.04) translateY(-12px) rotateX(-6deg);
-      box-shadow:var(--glow-teal);
-      animation-play-state: paused;
-    }
-    .rules-reminder:hover {
-      box-shadow:var(--glow-red);
-    }
-
-    footer { text-align:center; padding:160px 0 90px; color:var(--text-muted); border-top:1px solid rgba(255,255,255,0.09); }
-
+    footer { text-align:center; padding:120px 0 90px; color:var(--text-muted); border-top:1px solid rgba(255,255,255,0.09); }
     @media (max-width:768px) {
-      .hero { padding-top:180px; text-align:center; }
+      .hero { padding-top:180px; text-align:center; padding-bottom:40px; }
       .ip-box { flex-direction:column; gap:24px; padding:30px; }
       nav { flex-direction:column; gap:26px; }
       .nav-links { margin-top:26px; }
       h1 { font-size:clamp(4.5rem,10vw,8.5rem); }
-      .subtitle { font-size:1.5rem; animation: typing 5s steps(60, end) forwards, blink 0.9s step-end infinite; }
+      .subtitle { font-size:1.5rem; }
+      .features { gap:30px; }
+      .card, .note-box, .rules-reminder { padding:36px 28px; }
     }
   </style>
 </head>
 <body>
+  <div class="liquid-glass"></div>
+  <div class="tiny-stars" id="stars"></div>
+
   <header id="header">
     <div class="container">
       <nav>
@@ -323,22 +288,19 @@
   </header>
 
   <section class="hero" id="home">
-    <div class="particles" id="particles"></div>
     <div class="container">
       <div class="hero-content">
         <h1>WarOrAlly</h1>
         <p class="subtitle">Java Minecraft server. No pay-to-win. Griefing and wars allowed. Lifesteal. Form alliances and betray them freely. Custom content. Chat with us on Discord (top menu)</p>
-    
+   
         <div class="ip-box">
           <span class="ip">warorally.playit.plus</span>
           <button class="copy-btn" data-clipboard="warorally.playit.plus">Copy IP</button>
         </div>
-    
+
         <div class="note-box">
-          <strong>Note on playit.gg tunneling:</strong><br>
-          We use playit.gg (free tunneling service) to host the server. Sometimes your router or ISP may completely block the connection. This is because some other playit.gg users have hosted malware in the past, causing certain IPs to get flagged or blacklisted. Our server is completely safe and has no malware.<br><br>
-          If it won't connect at first, try spamming refresh or retrying multiple times. It often goes through after a few attempts.<br>
-          Also: the server is not online 24/7. It only runs when the host is active.
+          <strong>Connection note:</strong><br>
+          Use <strong>Direct Connect</strong> instead of Add Server it will likely not work otherwise due to playit.gg tunneling.
         </div>
       </div>
     </div>
@@ -349,15 +311,13 @@
       <h2>Server Features</h2>
       <div class="features">
         <div class="card"><h3>No Pay-to-Win</h3><p>Nothing is purchasable. Everyone plays on equal terms. No ranks or advantages.</p></div>
-        <div class="card"><h3>Lifesteal</h3><p>Steal hearts from opponents in PvP. Lose hearts when killed. Classic lifesteal mechanics.</p></div>
+        <div class="card"><h3>Lifesteal</h3><p>Steal hearts from opponents in PvP. Lose hearts when killed. Classic lifesteal mechanics.<br><strong>Min hearts: 2</strong> (no lower than 2 hearts possible)</p></div>
         <div class="card"><h3>Levelled Mobs</h3><p>Mobs scale in difficulty based on location and depth. More challenging fights.</p></div>
         <div class="card"><h3>Excellent Enchants</h3><p>80+ custom enchantments that feel vanilla-like. New ways to upgrade gear.</p></div>
-        <div class="card armor-trims"><h3>Armor Trims</h3><p>Armor trims now give buffs too! Certain trims grant extra perks like speed, resistance, or special abilities when applied to full/partial sets.</p></div>
         <div class="card"><h3>Bloodmoons</h3><p>Occasional intense nights with stronger, faster, more aggressive mobs.</p></div>
         <div class="card"><h3>Reworked Bosses</h3><p>Wither and Ender Dragon have updated attacks and improved loot tables.</p></div>
         <div class="card"><h3>Custom Structures & Biomes</h3><p>Hand-crafted structures and modified biomes for better exploration.</p></div>
         <div class="card"><h3>Head Drops</h3><p>Players drop their heads on death. Collect them as trophies.</p></div>
-        <div class="card updates-card"><h3>Lifesteal Update</h3><p><strong>Lifesteal no longer bans the lowest hearts you can have is 2</strong><br>During PvP: If you get slain to death by a player, your inventory will drop.<br>If killed by mobs/environment: You will keep your inventory (all worlds).<br><strong>Ban Appeals:</strong> If you got banned for anything else, you can appeal at the Discord server for ALL bans.</p></div>
         <div class="card"><h3>Griefing & Wars Allowed</h3><p>No land claims or protection. Build, break, and fight freely.</p></div>
         <div class="card"><h3>Alliances & Betrayals</h3><p>Form alliances with other players or groups. Team up, share resources, coordinate attacks. Betrayals are fully allowed. Trust is earned, not enforced.</p></div>
         <div class="card"><h3>Java & Cracked</h3><p>Offline-mode login supported. Java Edition only (no Bedrock).</p></div>
@@ -368,19 +328,7 @@
   <section id="join" style="text-align:center; padding:200px 0 180px;">
     <div class="container">
       <h2>Join WarOrAlly</h2>
-  
-      <div class="vanilla-note" style="margin:0 auto 5rem;">
-        <strong>Important - Vanilla Friendly:</strong><br>
-        All features work without any mods. You can join and play on completely vanilla Minecraft. Everything is handled server-side with plugins only.<br><br>
-        If the server prompts you to download a resource pack, it is purely for Quality of Life visual improvements: shortened or lower shields (better visibility during PvP), better grass textures (no ugly exposed dirt sides), enhanced shield models, smoother overall looks, and other small tweaks that make the game generally prettier and more enjoyable. It does not change gameplay mechanics. It only makes vanilla look nicer.
-      </div>
-      <div class="direct-connect-note" style="margin:0 auto 5rem;">
-        <strong>Connection Tip Direct Connect Recommended</strong><br>
-        We recommend using <strong>Direct Connect</strong> in the Minecraft multiplayer menu (instead of adding the server to your list first).<br><br>
-        How: Multiplayer → Direct Connect → paste <code>warorally.playit.plus</code> → Join Server.<br><br>
-        It's possible to add the server normally and join from the list, but if you get connection timeouts, "can't connect to server", or it fails after several tries (common with playit.gg tunnels), <strong>switch to Direct Connect</strong> — it often bypasses the issue and connects more reliably.
-      </div>
-  
+ 
       <div class="rules-reminder">
         <strong>Server Rules Reminder:</strong><br>
         Even though this is an anarchy-style server, the following rules are still enforced:<br>
@@ -391,7 +339,7 @@
         If you break these rules, <strong>please report it immediately on our Discord server</strong> (link in top menu).<br>
         Violators will be banned to keep the community fair and fun.
       </div>
-  
+ 
       <h3 style="margin:6rem 0 2.5rem; font-size:2.8rem; color:var(--accent);">How to Join (Java Edition)</h3>
       <p style="font-size:1.4rem; color:var(--text-muted); max-width:680px; margin:0 auto 4rem; line-height:1.9;">
         1. Open your Minecraft Launcher<br>
@@ -416,11 +364,9 @@
         document.querySelector(this.getAttribute('href')).scrollIntoView({ behavior: 'smooth' });
       });
     });
-
     window.addEventListener('scroll', () => {
       document.getElementById('header').classList.toggle('scrolled', window.scrollY > 60);
     });
-
     document.querySelectorAll('.copy-btn').forEach(btn => {
       btn.addEventListener('click', async () => {
         const text = btn.getAttribute('data-clipboard');
@@ -434,7 +380,6 @@
         }
       });
     });
-
     const observer = new IntersectionObserver(entries => {
       entries.forEach(entry => {
         if (entry.isIntersecting) {
@@ -442,21 +387,23 @@
         }
       });
     }, { threshold: 0.15 });
+    document.querySelectorAll('.card, .note-box, .rules-reminder').forEach(el => observer.observe(el));
 
-    document.querySelectorAll('.card, .note-box, .vanilla-note, .rules-reminder, .direct-connect-note').forEach(el => observer.observe(el));
-
-    const particlesContainer = document.getElementById('particles');
-    for (let i = 0; i < 35; i++) {
-      const p = document.createElement('div');
-      p.classList.add('particle');
-      const size = Math.random() * 5 + 2;
-      p.style.width = `${size}px`;
-      p.style.height = `${size}px`;
-      p.style.left = `${Math.random() * 100}vw`;
-      p.style.animationDuration = `${Math.random() * 40 + 35}s`;
-      p.style.animationDelay = `${Math.random() * -50}s`;
-      p.style.setProperty('--drift', `${(Math.random() - 0.5) * 60}vw`);
-      particlesContainer.appendChild(p);
+    const starsContainer = document.getElementById('stars');
+    for (let i = 0; i < 220; i++) {
+      const star = document.createElement('div');
+      star.classList.add('star');
+      const size = Math.random() * 2.4 + 0.7;
+      star.style.width = `${size}px`;
+      star.style.height = `${size * 6}px`;
+      star.style.left = `${Math.random() * 100}vw`;
+      star.style.top = `${Math.random() * -50}vh`;
+      star.style.color = ['#e0f7ff', '#d0c4ff', '#ffd1e0', '#fff2cc', '#a0f0ff'][Math.floor(Math.random()*5)];
+      const duration = Math.random() * 40 + 28;
+      star.style.animation = `fallStar ${duration}s linear infinite`;
+      star.style.animationDelay = `${Math.random() * -45}s`;
+      star.style.setProperty('--drift', `${(Math.random() - 0.5) * 400}px`);
+      starsContainer.appendChild(star);
     }
   </script>
 </body>
