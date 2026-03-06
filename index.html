@@ -63,10 +63,10 @@
                   radial-gradient(circle at 80% 30%, rgba(255, 230, 140, 0.16) 0%, transparent 45%);
     }
     @keyframes liquid-flow {
-      0%   { transform: translate(0%, 0%) scale(1.05) rotate(0deg); }
-      25%  { transform: translate(15%, 10%) scale(1.15) rotate(5deg); }
-      50%  { transform: translate(-12%, -15%) scale(1.22) rotate(-4deg); }
-      75%  { transform: translate(10%, -8%) scale(1.12) rotate(6deg); }
+      0% { transform: translate(0%, 0%) scale(1.05) rotate(0deg); }
+      25% { transform: translate(15%, 10%) scale(1.15) rotate(5deg); }
+      50% { transform: translate(-12%, -15%) scale(1.22) rotate(-4deg); }
+      75% { transform: translate(10%, -8%) scale(1.12) rotate(6deg); }
       100% { transform: translate(0%, 0%) scale(1.05) rotate(0deg); }
     }
     .tiny-stars {
@@ -87,9 +87,9 @@
       will-change: transform, opacity;
     }
     @keyframes fallStar {
-      0%   { transform: translateY(-30vh) translateX(var(--drift)) scale(0.5); opacity: 0; }
-      8%   { opacity: 0.95; }
-      92%  { opacity: 0.95; }
+      0% { transform: translateY(-30vh) translateX(var(--drift)) scale(0.5); opacity: 0; }
+      8% { opacity: 0.95; }
+      92% { opacity: 0.95; }
       100% { transform: translateY(130vh) translateX(calc(var(--drift) * 1.4)) scale(0.7); opacity: 0; }
     }
     .container { max-width:1340px; margin:0 auto; padding:0 26px; }
@@ -157,7 +157,7 @@
     }
     @keyframes pulseSoft {
       0%,100% { opacity:0.55; transform:scale(1); }
-      50%     { opacity:0.85; transform:scale(1.07); }
+      50% { opacity:0.85; transform:scale(1.07); }
     }
     .hero-content { max-width:1040px; position:relative; z-index:2; }
     h1 {
@@ -272,7 +272,6 @@
 <body>
   <div class="liquid-glass"></div>
   <div class="tiny-stars" id="stars"></div>
-
   <header id="header">
     <div class="container">
       <nav>
@@ -286,18 +285,16 @@
       </nav>
     </div>
   </header>
-
   <section class="hero" id="home">
     <div class="container">
       <div class="hero-content">
         <h1>WarOrAlly</h1>
         <p class="subtitle">Java Minecraft server. No pay-to-win. Griefing and wars allowed. Lifesteal. Form alliances and betray them freely. Custom content. Chat with us on Discord (top menu)</p>
-   
+  
         <div class="ip-box">
           <span class="ip">warorally.playit.plus</span>
           <button class="copy-btn" data-clipboard="warorally.playit.plus">Copy IP</button>
         </div>
-
         <div class="note-box">
           <strong>Connection note:</strong><br>
           Use <strong>Direct Connect</strong> instead of Add Server it will likely not work otherwise due to playit.gg tunneling.
@@ -305,14 +302,12 @@
       </div>
     </div>
   </section>
-
   <section id="features">
     <div class="container">
       <h2>Server Features</h2>
       <div class="features">
         <div class="card"><h3>No Pay-to-Win</h3><p>Nothing is purchasable. Everyone plays on equal terms. No ranks or advantages.</p></div>
         <div class="card"><h3>Lifesteal</h3><p>Steal hearts from opponents in PvP. Lose hearts when killed. Classic lifesteal mechanics.<br><strong>Min hearts: 2</strong> (no lower than 2 hearts possible)</p></div>
-        <div class="card"><h3>Levelled Mobs</h3><p>Mobs scale in difficulty based on location and depth. More challenging fights.</p></div>
         <div class="card"><h3>Excellent Enchants</h3><p>80+ custom enchantments that feel vanilla-like. New ways to upgrade gear.</p></div>
         <div class="card"><h3>Bloodmoons</h3><p>Occasional intense nights with stronger, faster, more aggressive mobs.</p></div>
         <div class="card"><h3>Reworked Bosses</h3><p>Wither and Ender Dragon have updated attacks and improved loot tables.</p></div>
@@ -324,11 +319,9 @@
       </div>
     </div>
   </section>
-
   <section id="join" style="text-align:center; padding:200px 0 180px;">
     <div class="container">
       <h2>Join WarOrAlly</h2>
- 
       <div class="rules-reminder">
         <strong>Server Rules Reminder:</strong><br>
         Even though this is an anarchy-style server, the following rules are still enforced:<br>
@@ -339,7 +332,6 @@
         If you break these rules, <strong>please report it immediately on our Discord server</strong> (link in top menu).<br>
         Violators will be banned to keep the community fair and fun.
       </div>
- 
       <h3 style="margin:6rem 0 2.5rem; font-size:2.8rem; color:var(--accent);">How to Join (Java Edition)</h3>
       <p style="font-size:1.4rem; color:var(--text-muted); max-width:680px; margin:0 auto 4rem; line-height:1.9;">
         1. Open your Minecraft Launcher<br>
@@ -350,13 +342,11 @@
       <p style="color:var(--text-muted); font-size:1.24rem;">Latest version recommended. Cracked accounts supported</p>
     </div>
   </section>
-
   <footer>
     <div class="container">
       <p>2026 © WarOrAlly Minecraft Java Server</p>
     </div>
   </footer>
-
   <script>
     document.querySelectorAll('a[href^="#"]').forEach(anchor => {
       anchor.addEventListener('click', function(e) {
@@ -388,7 +378,6 @@
       });
     }, { threshold: 0.15 });
     document.querySelectorAll('.card, .note-box, .rules-reminder').forEach(el => observer.observe(el));
-
     const starsContainer = document.getElementById('stars');
     for (let i = 0; i < 220; i++) {
       const star = document.createElement('div');
